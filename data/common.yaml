@@ -1,0 +1,20 @@
+---
+lookup_options:
+    sshd::trusted_subnets:
+        merge: deep
+    sshd::config:
+        merge: hash
+    sshd::config_matches:
+        merge:
+            strategy: deep
+            knockout_prefix: '-'
+    sshd::revoked_keys:
+        merge: deep
+
+sshd::allow_from::users: []
+sshd::allow_from::groups: []
+sshd::allow_from::additional_match_params: {}
+
+sshd::trusted_subnets: []
+sshd::config_matches: {}
+sshd::revoked_keys: []
