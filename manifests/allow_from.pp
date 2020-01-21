@@ -1,5 +1,3 @@
-# Enable incoming ssh connections for a given set of hosts
-#
 # @summary Enable incoming ssh for a given set of hosts
 #   + Update iptables firewall
 #   + Update sshd_config with a Match directive and associated settings
