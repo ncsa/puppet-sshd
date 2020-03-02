@@ -82,9 +82,9 @@ define sshd::allow_from (
 
     ### TCPWRAPPERS
     $hostlist.each | $host | {
-        tcpwrappers::allow { "tcpwrappers allow SSH from host '${host}'":
-            service => 'sshd',
-            address => $host,
+        tcpwrappers::allow { "sshd::allow_from host '${host}'":
+          service => 'sshd',
+          address => $host,
         }
     }
 
@@ -99,7 +99,7 @@ define sshd::allow_from (
     $domains.each |$domain| {
         if $users =~ Array[String,1] {
             $csv = $users.join(',')
-            ::sssd::domain::array_append { "${name} users '${csv}' for sssd domain '${domain}'" :
+            ::sssd::domain::append_array { "${name} users '${csv}' for sssd domain '${domain}'" :
                 domain  => $domain,
                 setting => 'simple_allow_users',
                 items   => $users,
@@ -107,7 +107,7 @@ define sshd::allow_from (
         }
         if $groups =~ Array[String,1] {
             $csv = $groups.join(',')
-            ::sssd::domain::array_append { "${name} groups '${csv}' for sssd domain '${domain}'" :
+            ::sssd::domain::append_array { "${name} groups '${csv}' for sssd domain '${domain}'" :
                 domain  => $domain,
                 setting => 'simple_allow_groups',
                 items   => $groups,
