@@ -11,10 +11,6 @@ lookup_options:
     sshd::revoked_keys:
         merge: deep
 
-sshd::allow_from::users: []
-sshd::allow_from::groups: []
-sshd::allow_from::additional_match_params: {}
-
 sshd::trusted_subnets: []
 sshd::config_matches: {}
 sshd::revoked_keys: []

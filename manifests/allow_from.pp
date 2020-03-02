@@ -38,18 +38,18 @@
 #   }
 define sshd::allow_from (
     Array[ String, 1 ]   $hostlist,
-    Array[ String ]      $users,
-    Array[ String ]      $groups,
-    Hash[ String, Data ] $additional_match_params,
+    Array[ String ]      $users                   = [],
+    Array[ String ]      $groups                  = [],
+    Hash[ String, Data ] $additional_match_params = {},
 ) {
 
-    ### CHECK INPUT
+    # CHECK INPUT
     if empty( $users ) and empty( $groups ) {
         fail( "'users' and 'groups' cannot both be empty" )
     }
 
 
-    ### ACCESS.CONF
+    # ACCESS.CONF
     ### This sets up the pam access.conf file to allow incoming ssh
     $groups.each |String $group| { $hostlist.each |String $host| {
         pam_access::entry { "Allow ${group} ssh from ${host}":
