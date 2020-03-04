@@ -2,7 +2,7 @@
 #   + Update iptables firewall
 #   + Update sshd_config with a Match directive and associated settings
 #   + Update access.conf
-#   + Update tcpwrappers
+#   + Update tcpwrappers (broken on puppet v6)
 #
 # @param users
 #   Type: Array
@@ -80,13 +80,13 @@ define sshd::allow_from (
     }
 
 
-    ### TCPWRAPPERS
-    $hostlist.each | $host | {
-        tcpwrappers::allow { "sshd::allow_from host '${host}'":
-          service => 'sshd',
-          address => $host,
-        }
-    }
+#    ### TCPWRAPPERS
+#    $hostlist.each | $host | {
+#        tcpwrappers::allow { "sshd::allow_from host '${host}'":
+#          service => 'sshd',
+#          address => $host,
+#        }
+#    }
 
 
     ### SSSD
