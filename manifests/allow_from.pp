@@ -95,7 +95,10 @@ define sshd::allow_from (
     # See also: https://github.com/woodsbw/augeasfacter
     ###
     # convert sssd domains from csv string to a puppet array
-    $domains = $facts['sssd_domains'].regsubst(/ +/, '', 'G').split(',')
+    $domains = $facts['sssd_domains'] ? {
+        String[1] => $facts['sssd_domains'].regsubst(/ +/, '', 'G').split(','),
+        default   =>  [],
+    }
     $domains.each |$domain| {
         if $users =~ Array[String,1] {
             $csv = $users.join(',')
