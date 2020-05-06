@@ -16,8 +16,8 @@
 [REFERENCE](REFERENCE.md)
 
 ## Dependencies
-- herculesteam/augeasproviders
-- puppetlabs/firewall
-- MiamiOH/pam_access
-- github.com/ncsa/puppet-sssd
-- github.com/woodsbw/augeasfacter
+- [herculesteam/augeasproviders](https://forge.puppet.com/herculesteam/augeasproviders)
+- [puppetlabs/firewall](https://forge.puppet.com/puppetlabs/firewall)
+- [MiamiOH/pam_access](https://forge.puppet.com/MiamiOH/pam_access)
+- [ncsa/puppet-sssd](https://github.com/ncsa/puppet-sssd)
+- [woodsbw/augeasfacter](https://github.com/woodsbw/augeasfacter)
