@@ -11,26 +11,13 @@
 4. [Limitations - OS compatibility, etc.](#limitations)
 5. [Development - Guide for contributing to the module](#development)
 
-## Description
-
-[REFERENCE](REFERENCE.md)
-
-## Setup
-
-### What sshd affects **OPTIONAL**
-
-### Setup Requirements **OPTIONAL**
-
-### Beginning with sshd
-
-## Usage
-
 ## Reference
 
 [REFERENCE](REFERENCE.md)
 
-## Limitations
-
-## Development
-
-## Release Notes/Contributors/Etc. **Optional**
+## Dependencies
+- herculesteam/augeasproviders
+- puppetlabs/firewall
+- MiamiOH/pam_access
+- github.com/ncsa/puppet-sssd
+- github.com/woodsbw/augeasfacter

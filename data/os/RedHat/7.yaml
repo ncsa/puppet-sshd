@@ -14,7 +14,8 @@ sshd::config:
     DisableForwarding: 'yes'
     GSSAPIAuthentication: 'no'
     GSSAPICleanupCredentials: 'no'
-#    GSSAPIKexAlgorithms: gss-group14-sha1-
+    GSSAPIKexAlgorithms:
+      - 'gss-group14-sha1-'
     GSSAPIKeyExchange: 'yes'
     GatewayPorts: 'no'
     HostKey:
@@ -22,6 +23,13 @@ sshd::config:
       - /etc/ssh/ssh_host_ed25519_key
       - /etc/ssh/ssh_host_rsa_key
     KerberosAuthentication: 'no'
+    KexAlgorithms:
+      - curve25519-sha256
+      - curve25519-sha256@libssh.org
+      - ecdh-sha2-nistp384
+      - ecdh-sha2-nistp256
+      - diffie-hellman-group16-sha512
+      - diffie-hellman-group-exchange-sha256
     LogLevel: VERBOSE
     MACs:
       - hmac-sha2-512-etm@openssh.com

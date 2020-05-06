@@ -80,13 +80,13 @@ define sshd::allow_from (
     }
 
 
-#    ### TCPWRAPPERS
-#    $hostlist.each | $host | {
-#        tcpwrappers::allow { "sshd::allow_from host '${host}'":
-#          service => 'sshd',
-#          address => $host,
-#        }
-#    }
+    ### TCPWRAPPERS
+    $hostlist.each | $host | {
+        tcpwrappers::allow { "sshd::allow_from host '${host}'":
+          service => 'sshd',
+          address => $host,
+        }
+    }
 
 
     ### SSSD
