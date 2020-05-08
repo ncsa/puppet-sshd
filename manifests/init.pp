@@ -1,5 +1,7 @@
 # @summary Configure default sshd settings
 #
+# Configure default sshd settings
+#
 # @param trusted_subnets
 #   Array of IPs and CIDRs to be allowed through the firewall
 #   Values from multiple sources are merged
@@ -11,10 +13,11 @@
 #   Key collisions are resolved in favor of the higher priority value
 #
 # @param config_matches
-#   Hash of config "match" conditions and settings
-#   Keys are match condition
-#   Vals are a hash of sshd_config settings for the match condition
+#   Hash of config "match" conditions and settings.
+#   Keys are match condition.
+#   Vals are a hash of sshd_config settings for the match condition.
 #   Expected format:
+#   ```
 #   ---
 #   sshd::config_matches:
 #     Unique condition one:
@@ -32,17 +35,15 @@
 #   Key collisions are resolved in favor of the higher priority value
 #   Merges are deep to allow use of the knockout_prefix '-' (to remove a key
 #   from the final result).
+#   ```
 #
 # @param revoked_keys
-#   List of ssh public keys to disallow
-#   Values from multiple sources are merged
-#
-# @note Parameters below here are either OS dependent or not likely to change
-# often
+#   List of ssh public keys to disallow.
+#   Values from multiple sources are merged.
 #
 # @param required_packages
-#   List of package names to be installed (OS specific)
-#   (Defaults provided by module should be sufficient)
+#   List of package names to be installed (OS specific).
+#   (Defaults provided by module should be sufficient).
 #
 # @example
 #   include sshd

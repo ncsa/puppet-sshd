@@ -10,18 +10,12 @@
 **Defined types**
 
 * [`sshd::allow_from`](#sshdallow_from): Enable incoming ssh for a given set of hosts
-+ Update iptables firewall
-+ Update sshd_config with a Match directive and associated settings
-+ Update access.conf
-+ Update tcpwrappers
 
 ## Classes
 
 ### sshd
 
-often
-
-* **Note** Parameters below here are either OS dependent or not likely to change
+Configure default sshd settings
 
 #### Examples
 
@@ -55,10 +49,11 @@ Key collisions are resolved in favor of the higher priority value
 
 Data type: `Hash[String,Hash]`
 
-Hash of config "match" conditions and settings
-Keys are match condition
-Vals are a hash of sshd_config settings for the match condition
+Hash of config "match" conditions and settings.
+Keys are match condition.
+Vals are a hash of sshd_config settings for the match condition.
 Expected format:
+```
 ---
 sshd::config_matches:
   Unique condition one:
@@ -76,20 +71,21 @@ Values from multiple sources are merged
 Key collisions are resolved in favor of the higher priority value
 Merges are deep to allow use of the knockout_prefix '-' (to remove a key
 from the final result).
+```
 
 ##### `revoked_keys`
 
 Data type: `Array[String]`
 
-List of ssh public keys to disallow
-Values from multiple sources are merged
+List of ssh public keys to disallow.
+Values from multiple sources are merged.
 
 ##### `required_packages`
 
 Data type: `Array[String]`
 
-List of package names to be installed (OS specific)
-(Defaults provided by module should be sufficient)
+List of package names to be installed (OS specific).
+(Defaults provided by module should be sufficient).
 
 ##### `revoked_keys_file`
 
@@ -102,10 +98,14 @@ Data type: `String`
 ### sshd::allow_from
 
 Enable incoming ssh for a given set of hosts
-+ Update iptables firewall
-+ Update sshd_config with a Match directive and associated settings
-+ Update access.conf
-+ Update tcpwrappers
+
+Update iptables firewall
+
+Update sshd_config with a Match directive and associated settings
+
+Update access.conf
+
+Update tcpwrappers
 
 #### Examples
 
@@ -134,33 +134,38 @@ The following parameters are available in the `sshd::allow_from` defined type.
 
 Data type: `Array[ String ]`
 
-Type: Array
-Desc: list of users to allow (from hostlist)
+List of users to allow (from hostlist)
+
 Note: If both "users" and "groups" are empty, error is raised.
+
+Default value: []
 
 ##### `groups`
 
 Data type: `Array[ String ]`
 
-Type: Array
-Desc: list of groups to allow (from hostlist)
+List of groups to allow (from hostlist)
+
 Note: If both "users" and "groups" are empty, error is raised.
+
+Default value: []
 
 ##### `hostlist`
 
 Data type: `Array[ String, 1 ]`
 
-Type: Array
-Desc: list of IPs or Hostnames that (users/groups) are allowed to ssh from
+List of IPs or Hostnames that (users/groups) are allowed to ssh from
 
 ##### `additional_match_params`
 
 Data type: `Hash[ String, Data ]`
 
-Type: Hash
-Desc: sshd config keywords and values
-Format: additional_match_params = { 'keyword1' => 'value1',
-                                    'keyword2' => 'value2',
-                                    'keyword3' => [ 'val3_1','val3_2' ],
-                                  }
+Sshd config keywords and values.
+Format:
+additional_match_params = { 'keyword1' => 'value1',
+                            'keyword2' => 'value2',
+                            'keyword3' => [ 'val3_1','val3_2' ],
+                          }
+
+Default value: {}
 

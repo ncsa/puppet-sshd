@@ -1,30 +1,35 @@
 # @summary Enable incoming ssh for a given set of hosts
-#   + Update iptables firewall
-#   + Update sshd_config with a Match directive and associated settings
-#   + Update access.conf
-#   + Update tcpwrappers (broken on puppet v6)
+#
+# Enable incoming ssh for a given set of hosts
+#
+# Update iptables firewall
+#
+# Update sshd_config with a Match directive and associated settings
+#
+# Update access.conf
+#
+# Update tcpwrappers
 #
 # @param users
-#   Type: Array
-#   Desc: list of users to allow (from hostlist)
+#   List of users to allow (from hostlist)
+#
 #   Note: If both "users" and "groups" are empty, error is raised.
 #
 # @param groups
-#   Type: Array
-#   Desc: list of groups to allow (from hostlist)
+#   List of groups to allow (from hostlist)
+#
 #   Note: If both "users" and "groups" are empty, error is raised.
 #
 # @param hostlist
-#   Type: Array
-#   Desc: list of IPs or Hostnames that (users/groups) are allowed to ssh from
+#   List of IPs or Hostnames that (users/groups) are allowed to ssh from
 #
 # @param additional_match_params
-#   Type: Hash
-#   Desc: sshd config keywords and values
-#   Format: additional_match_params = { 'keyword1' => 'value1',
-#                                       'keyword2' => 'value2',
-#                                       'keyword3' => [ 'val3_1','val3_2' ],
-#                                     }
+#   Sshd config keywords and values.
+#   Format:
+#   additional_match_params = { 'keyword1' => 'value1',
+#                               'keyword2' => 'value2',
+#                               'keyword3' => [ 'val3_1','val3_2' ],
+#                             }
 #
 # @example
 #   sshd::allow_from { 'namevar': }
