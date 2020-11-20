@@ -48,87 +48,91 @@
 # @example
 #   include sshd
 class sshd (
-    Array             $trusted_subnets,
-    Hash              $config,
-    Hash[String,Hash] $config_matches,
-    Array[String]     $revoked_keys,
+  Array             $trusted_subnets,
+  Hash              $config,
+  Hash[String,Hash] $config_matches,
+  Array[String]     $revoked_keys,
 
-    # Module defaults should be sufficient
-    Array[String] $required_packages,   #per OS
-    String        $revoked_keys_file,   #per OS
+  # Module defaults should be sufficient
+  Array[String] $required_packages,   #per OS
+  String        $revoked_keys_file,   #per OS
 ) {
 
-    # PACKAGES
-    ensure_packages( $required_packages, {'ensure' => 'present'} )
+  # PACKAGES
+  ensure_packages( $required_packages, {'ensure' => 'present'} )
 
-    # SERVICE
-    service { 'sshd' :
-        ensure     => running,
-        enable     => true,
-        hasstatus  => true,
-        hasrestart => true,
-        require    => Package[ $required_packages ],
+  # SERVICE
+  service { 'sshd' :
+    ensure     => running,
+    enable     => true,
+    hasstatus  => true,
+    hasrestart => true,
+    require    => Package[ $required_packages ],
+  }
+
+  # FIREWALL
+  each($trusted_subnets) | $index, $sshd_subnet | {
+    firewall { "022 allow SSH from ${sshd_subnet}":
+      dport  => 22,
+      proto  => tcp,
+      source => $sshd_subnet,
+      action => accept,
     }
+  }
 
-    # FIREWALL
-    each($trusted_subnets) | $index, $sshd_subnet | {
-        firewall { "022 allow SSH from ${sshd_subnet}":
-            dport  => 22,
-            proto  => tcp,
-            source => $sshd_subnet,
-            action => accept,
-        }
+  # REVOKED KEYS
+  file { $revoked_keys_file :
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => join( $revoked_keys, "\n" ),
+    notify  => Service['sshd'],
+  }
+
+  # SSHD CONFIG SETTINGS
+
+  # Default sshd_config attributes
+  $config_defaults = {
+    'notify' => Service[ sshd ],
+  }
+  $config_match_defaults = $config_defaults + { 'position' => 'before first match' }
+
+  # Apply global sshd_config settings
+  $config.each | $key, $val | {
+    sshd_config {
+      $key :
+        value => $val,
+      ;
+      default:
+        * => $config_defaults,
+      ;
     }
+  }
 
-    # REVOKED KEYS
-    file { $revoked_keys_file :
-        ensure  => present,
-        owner   => root,
-        group   => root,
-        mode    => '0644',
-        content => join( $revoked_keys, "\n" ),
-        notify  => Service['sshd'],
+  # Process config match settings from Hiera
+  $config_matches.each | $condition, $data | {
+    # Create config match section
+    sshd_config_match {
+      $condition :
+      ;
+      default:
+        * => $config_match_defaults,
+      ;
     }
-
-    # SSHD CONFIG SETTINGS
-
-    # Default sshd_config attributes
-    $config_defaults = {
-        'notify' => Service[ sshd ],
+    # Set each setting inside the match section
+    $data.each | $key, $val | {
+      sshd_config {
+        "${condition} ${key}" :
+          key       => $key,
+          value     => $val,
+          condition => $condition,
+        ;
+        default:
+          * => $config_defaults,
+        ;
+      }
     }
-    $config_match_defaults = $config_defaults + { 'position' => 'before first match' }
-
-    # Apply global sshd_config settings
-    $config.each | $key, $val | {
-        sshd_config {
-            $key : value => $val,
-            ;
-            default: * => $config_defaults,
-            ;
-        }
-    }
-
-    # Process config match settings from Hiera
-    $config_matches.each | $condition, $data | {
-        # Create config match section
-        sshd_config_match {
-            $condition :
-            ;
-            default: * => $config_match_defaults,
-            ;
-        }
-        # Set each setting inside the match section
-        $data.each | $key, $val | {
-            sshd_config {
-                "${condition} ${key}" :
-                    key       => $key,
-                    value     => $val,
-                    condition => $condition,
-                ;
-                default: * => $config_defaults,
-                ;
-            }
-        }
-    }
+  }
 
 }
