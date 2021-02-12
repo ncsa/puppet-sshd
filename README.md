@@ -11,7 +11,6 @@ specified sources.
 - [herculesteam/augeasproviders](https://forge.puppet.com/herculesteam/augeasproviders)
 - [ncsa/puppet-sssd](https://github.com/ncsa/puppet-sssd)
 - [puppetlabs/firewall](https://forge.puppet.com/puppetlabs/firewall)
-- [sharumpe/tcpwrappers](https://forge.puppet.com/sharumpe/tcpwrappers)
 - [woodsbw/augeasfacter](https://github.com/woodsbw/augeasfacter)
 
 ## Reference
