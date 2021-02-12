@@ -8,8 +8,6 @@
 #
 # Update access.conf
 #
-# Update tcpwrappers
-#
 # @param users
 #   List of users to allow (from hostlist)
 #
@@ -84,18 +82,6 @@ define sshd::allow_from (
       action => accept,
     }
   }
-
-
-  ### TCPWRAPPERS
-  $tcpwrap_data = $hostlist.reduce({}) | $memo, $host | {
-    $memo + {
-      "sshd::allow_from host '${host}'" => {
-        service => 'sshd',
-        address =>  $host,
-      },
-    }
-  }
-  ensure_resources( 'tcpwrappers::allow', $tcpwrap_data )
 
 
   ### SSSD

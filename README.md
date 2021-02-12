@@ -1,5 +1,8 @@
 # sshd
 
+![pdk-validate](https://github.com/ncsa/puppet-sshd/workflows/pdk-validate/badge.svg)
+![yamllint](https://github.com/ncsa/puppet-sshd/workflows/yamllint/badge.svg)
+
 Manage base sshd_config settings and allow_ssh access for users and groups from
 specified sources.
 

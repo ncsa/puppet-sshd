@@ -1,0 +1,6 @@
+---
+ignore: |
+  .gitlab-ci.yml
+  .rubocop.yml
+  .travis.yml
+  appveyor.yml
