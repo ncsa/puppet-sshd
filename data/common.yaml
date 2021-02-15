@@ -1,7 +1,5 @@
 ---
 lookup_options:
-    sshd::trusted_subnets:
-        merge: deep
     sshd::config:
         merge: hash
     sshd::config_matches:
@@ -10,7 +8,9 @@ lookup_options:
             knockout_prefix: '-'
     sshd::revoked_keys:
         merge: deep
+    sshd::trusted_subnets:
+        merge: deep
 
-sshd::trusted_subnets: []
 sshd::config_matches: {}
 sshd::revoked_keys: []
+sshd::trusted_subnets: []
