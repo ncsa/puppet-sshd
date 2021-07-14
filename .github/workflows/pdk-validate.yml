@@ -1,6 +1,6 @@
 ---
 name: "pdk-validate"
-on:
+on:  # yamllint disable-line rule:truthy
   - "push"
   - "pull_request"
 jobs:

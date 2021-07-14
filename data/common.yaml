@@ -1,15 +1,15 @@
 ---
 lookup_options:
-    sshd::config:
-        merge: hash
-    sshd::config_matches:
-        merge:
-            strategy: deep
-            knockout_prefix: '-'
-    sshd::revoked_keys:
-        merge: deep
-    sshd::trusted_subnets:
-        merge: deep
+  sshd::config:
+    merge: "hash"
+  sshd::config_matches:
+    merge:
+      strategy: "deep"
+      knockout_prefix: "-"
+  sshd::revoked_keys:
+    merge: "deep"
+  sshd::trusted_subnets:
+    merge: "deep"
 
 sshd::config_matches: {}
 sshd::revoked_keys: []
