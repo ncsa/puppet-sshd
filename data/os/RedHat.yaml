@@ -1,6 +1,12 @@
 ---
 sshd::config:
-  UsePAM: 'yes'
+  AllowGroups:
+    - "root"
+  DenyGroups:
+    - "all_disabled_usr"
+  PermitRootLogin: "no"
+  PubkeyAuthentication: "no"
+  UsePAM: "yes"
 sshd::required_packages:
-  - openssh-server
-sshd::revoked_keys_file: /etc/ssh/revoked_keys
+  - "openssh-server"
+sshd::revoked_keys_file: "/etc/ssh/revoked_keys"
