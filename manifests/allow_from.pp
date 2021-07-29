@@ -55,7 +55,7 @@ define sshd::allow_from (
   # ACCESS.CONF
   ### This sets up the pam access.conf file to allow incoming ssh
   $groups.each |String $group| { $hostlist.each |String $host| {
-    pam_access::entry { "Allow ${group} ssh from ${host}":
+    pam_access::entry { "Allow group ${group} ssh from ${host}":
       group      => $group,
       origin     => $host,
       permission => '+',
@@ -64,7 +64,7 @@ define sshd::allow_from (
   }}
 
   $users.each |String $user| { $hostlist.each |String $host| {
-    pam_access::entry { "Allow ${user} ssh from ${host}":
+    pam_access::entry { "Allow user ${user} ssh from ${host}":
       user       => $user,
       origin     => $host,
       permission => '+',
@@ -96,16 +96,16 @@ define sshd::allow_from (
   }
   $domains.each |$domain| {
     if $users =~ Array[String,1] {
-      $csv = $users.join(',')
-      ::sssd::domain::append_array { "${name} users '${csv}' for sssd domain '${domain}'" :
+      $user_csv = $users.join(',')
+      ::sssd::domain::append_array { "${name} users '${user_csv}' for sssd domain '${domain}'" :
         domain  => $domain,
         setting => 'simple_allow_users',
         items   => $users,
       }
     }
     if $groups =~ Array[String,1] {
-      $csv = $groups.join(',')
-      ::sssd::domain::append_array { "${name} groups '${csv}' for sssd domain '${domain}'" :
+      $group_csv = $groups.join(',')
+      ::sssd::domain::append_array { "${name} groups '${group_csv}' for sssd domain '${domain}'" :
         domain  => $domain,
         setting => 'simple_allow_groups',
         items   => $groups,
