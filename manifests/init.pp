@@ -54,7 +54,7 @@ class sshd (
   Hash              $config,
   Hash[String,Hash] $config_matches,
   Array[String]     $revoked_keys,
-  Optional[String] $banner,
+  Optional[String]  $banner = Undef,
 
   # Module defaults should be sufficient
   Array[String] $required_packages,   #per OS
