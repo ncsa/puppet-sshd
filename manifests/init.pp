@@ -37,8 +37,18 @@
 #   from the final result).
 #   ```
 # @param banner
-#   Creates a banner to display before login.
+#   A string to create a banner to display before login.
+#   Use to display before authentication.
+#   Defining this automatically sets the sshd_config option.
+#   If you define the Banner config in hiera, the Puppet agent will not run.
+#   Example of hiera data:
+#   ```
+#   sshd::banner: |2+
 #
+#   Login with NCSA Kerberos + Duo multi-factor.
+#
+#   DUO Documentation:  https://go.ncsa.illinois.edu/2fa
+#   ```
 # @param revoked_keys
 #   List of ssh public keys to disallow.
 #   Values from multiple sources are merged.
@@ -137,7 +147,7 @@ class sshd (
       }
     }
   }
-  
+
   #SSH Banner creation
   if ($banner != undef) {
     file { '/etc/sshbanner':

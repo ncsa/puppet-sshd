@@ -25,6 +25,7 @@ specified sources.
 -    Hash              $config,
 -    Hash[String,Hash] $config_matches,
 -    Array[String]     $revoked_keys,
+-    String            $banner,
 
 -    # Module defaults should be sufficient
 -    Array[String] $required_packages,   #per OS

@@ -33,6 +33,7 @@ The following parameters are available in the `sshd` class:
 * [`trusted_subnets`](#trusted_subnets)
 * [`config`](#config)
 * [`config_matches`](#config_matches)
+* [`banner`](#banner)
 * [`revoked_keys`](#revoked_keys)
 * [`required_packages`](#required_packages)
 * [`revoked_keys_file`](#revoked_keys_file)
@@ -80,6 +81,25 @@ Key collisions are resolved in favor of the higher priority value
 Merges are deep to allow use of the knockout_prefix '-' (to remove a key
 from the final result).
 ```
+
+##### <a name="banner"></a>`banner`
+
+Data type: `Optional[String]`
+
+A string to create a banner to display before login.
+Use to display before authentication.
+Defining this automatically sets the sshd_config option.
+If you define the Banner config in hiera, the Puppet agent will not run.
+Example of hiera data:
+```
+sshd::banner: |2+
+
+Login with NCSA Kerberos + Duo multi-factor.
+
+DUO Documentation:  https://go.ncsa.illinois.edu/2fa
+```
+
+Default value: ``undef``
 
 ##### <a name="revoked_keys"></a>`revoked_keys`
 
