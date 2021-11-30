@@ -94,7 +94,7 @@ class sshd (
   }
 
   # SSHD CONFIG SETTINGS
-  if ($banner == undef) {
+  if ($banner != undef) {
     file { '/etc/sshbanner':
       ensure  => file,
       content => $banner,
