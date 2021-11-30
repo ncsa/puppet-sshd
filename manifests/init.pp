@@ -36,7 +36,19 @@
 #   Merges are deep to allow use of the knockout_prefix '-' (to remove a key
 #   from the final result).
 #   ```
+# @param banner
+#   A string to create a banner to display before login.
+#   Use to display before authentication.
+#   Defining this automatically sets the sshd_config option.
+#   If you define the Banner config in hiera, the Puppet agent will not run.
+#   Example of hiera data:
+#   ```
+#   sshd::banner: |2+
 #
+#   Login with NCSA Kerberos + Duo multi-factor.
+#
+#   DUO Documentation:  https://go.ncsa.illinois.edu/2fa
+#   ```
 # @param revoked_keys
 #   List of ssh public keys to disallow.
 #   Values from multiple sources are merged.
@@ -52,6 +64,7 @@ class sshd (
   Hash              $config,
   Hash[String,Hash] $config_matches,
   Array[String]     $revoked_keys,
+  Optional[String]  $banner = undef,
 
   # Module defaults should be sufficient
   Array[String] $required_packages,   #per OS
@@ -135,4 +148,19 @@ class sshd (
     }
   }
 
+  #SSH Banner creation
+  if ($banner != undef) {
+    file { '/etc/sshbanner':
+      ensure  => file,
+      content => $banner,
+      mode    => '0644',
+      owner   => '0',
+      group   => '0',
+    }
+    sshd_config {
+      'Banner' :
+        value => '/etc/sshbanner',
+      ;
+    }
+  }
 }
