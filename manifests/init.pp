@@ -54,7 +54,7 @@ class sshd (
   Hash              $config,
   Hash[String,Hash] $config_matches,
   Array[String]     $revoked_keys,
-  Optional[String]  $banner, 
+  Optional[String]  $banner = undef,
 
   # Module defaults should be sufficient
   Array[String] $required_packages,   #per OS
@@ -94,7 +94,7 @@ class sshd (
   }
 
   # SSHD CONFIG SETTINGS
-  if not empty($banner) {
+  if ($banner == undef) {
     file { '/etc/sshbanner':
       ensure  => file,
       content => $banner,
