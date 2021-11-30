@@ -14,3 +14,4 @@ lookup_options:
 sshd::config_matches: {}
 sshd::revoked_keys: []
 sshd::trusted_subnets: []
+sshd::banner: ~

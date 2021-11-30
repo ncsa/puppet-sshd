@@ -36,6 +36,8 @@
 #   Merges are deep to allow use of the knockout_prefix '-' (to remove a key
 #   from the final result).
 #   ```
+# @param banner
+#   Creates a banner to display before login.
 #
 # @param revoked_keys
 #   List of ssh public keys to disallow.
@@ -52,6 +54,7 @@ class sshd (
   Hash              $config,
   Hash[String,Hash] $config_matches,
   Array[String]     $revoked_keys,
+  Optional[String] $banner,
 
   # Module defaults should be sufficient
   Array[String] $required_packages,   #per OS
@@ -91,6 +94,15 @@ class sshd (
   }
 
   # SSHD CONFIG SETTINGS
+  if defined('$banner') {
+    file { '/etc/sshbanner':
+      ensure  => file,
+      content => $banner,
+      mode    => '0644',
+      owner   => '0',
+      group   => '0',
+    }
+  }
 
   # Default sshd_config attributes
   $config_defaults = {
@@ -134,5 +146,4 @@ class sshd (
       }
     }
   }
-
 }
