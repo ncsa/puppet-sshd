@@ -94,15 +94,6 @@ class sshd (
   }
 
   # SSHD CONFIG SETTINGS
-  if ($banner != undef) {
-    file { '/etc/sshbanner':
-      ensure  => file,
-      content => $banner,
-      mode    => '0644',
-      owner   => '0',
-      group   => '0',
-    }
-  }
 
   # Default sshd_config attributes
   $config_defaults = {
@@ -144,6 +135,22 @@ class sshd (
           * => $config_defaults,
         ;
       }
+    }
+  }
+  
+  #SSH Banner creation
+  if ($banner != undef) {
+    file { '/etc/sshbanner':
+      ensure  => file,
+      content => $banner,
+      mode    => '0644',
+      owner   => '0',
+      group   => '0',
+    }
+    sshd_config {
+      'Banner' :
+        value => '/etc/sshbanner',
+      ;
     }
   }
 }
