@@ -60,15 +60,13 @@
 # @example
 #   include sshd
 class sshd (
-  Array             $trusted_subnets,
   Hash              $config,
   Hash[String,Hash] $config_matches,
+  Array[String]     $required_packages,   #per OS
   Array[String]     $revoked_keys,
+  String            $revoked_keys_file,   #per OS
+  Array             $trusted_subnets,
   Optional[String]  $banner = undef,
-
-  # Module defaults should be sufficient
-  Array[String] $required_packages,   #per OS
-  String        $revoked_keys_file,   #per OS
 ) {
 
   # PACKAGES
@@ -102,6 +100,11 @@ class sshd (
     content => join( $revoked_keys, "\n" ),
     notify  => Service['sshd'],
   }
+  sshd_config {
+    'RevokedKeys' :
+      value => $revoked_keys_file,
+    ;
+  }
 
   # SSHD CONFIG SETTINGS
 
@@ -110,6 +113,14 @@ class sshd (
     'notify' => Service[ sshd ],
   }
   $config_match_defaults = $config_defaults + { 'position' => 'before first match' }
+
+  $puppet_file_header = '# This file is managed by Puppet - Changes may be overwritten'
+  $sshd_config_file = '/etc/ssh/sshd_config'
+  exec { 'add puppet header to sshd_config':
+    command => "sed -i '1s/^/${puppet_file_header}\\n/' '${sshd_config_file}'",
+    unless  => "grep '${puppet_file_header}' ${sshd_config_file}",
+    path    => [ '/bin', '/usr/bin' ],
+  }
 
   # Apply global sshd_config settings
   $config.each | $key, $val | {
