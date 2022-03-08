@@ -15,20 +15,19 @@ specified sources.
 
 ## Reference
 
+[REFERENCE.md](REFERENCE.md)
+
 ### define sshd::allow_from (
 -    Array[ String, 1 ]   $hostlist,
 -    Array[ String ]      $users                   = [],
 -    Array[ String ]      $groups                  = [],
 -    Hash[ String, Data ] $additional_match_params = {},
 ### class sshd (
--    Array             $trusted_subnets,
+-    Boolean           $banner_ignore,
 -    Hash              $config,
 -    Hash[String,Hash] $config_matches,
+-    Array[String]     $required_packages,
 -    Array[String]     $revoked_keys,
--    String            $banner,
-
--    # Module defaults should be sufficient
--    Array[String] $required_packages,   #per OS
--    String        $revoked_keys_file,   #per OS
-
-[REFERENCE.md](REFERENCE.md)
+-    String            $revoked_keys_file,
+-    Array             $trusted_subnets,
+-    Optional[String]  $banner = undef,

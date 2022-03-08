@@ -11,6 +11,7 @@ lookup_options:
   sshd::trusted_subnets:
     merge: "deep"
 
+sshd::banner_ignore: false
 sshd::config_matches: {}
 sshd::revoked_keys: []
 sshd::trusted_subnets: []

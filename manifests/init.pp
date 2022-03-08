@@ -45,10 +45,14 @@
 #   ```
 #   sshd::banner: |2+
 #
-#   Login with NCSA Kerberos + Duo multi-factor.
+#     Login with NCSA Kerberos + NCSA Duo multi-factor.
 #
-#   DUO Documentation:  https://go.ncsa.illinois.edu/2fa
+#     DUO Documentation:  https://go.ncsa.illinois.edu/2fa
 #   ```
+#
+# @param banner_ignore
+#   Disable setting banner in sshd even if banner content is set
+#
 # @param revoked_keys
 #   List of ssh public keys to disallow.
 #   Values from multiple sources are merged.
@@ -60,6 +64,7 @@
 # @example
 #   include sshd
 class sshd (
+  Boolean           $banner_ignore,
   Hash              $config,
   Hash[String,Hash] $config_matches,
   Array[String]     $required_packages,   #per OS
@@ -160,7 +165,7 @@ class sshd (
   }
 
   #SSH Banner creation
-  if ($banner != undef) {
+  if ($banner != undef and ! $banner_ignore ) {
     file { '/etc/sshbanner':
       ensure  => file,
       content => $banner,

@@ -34,6 +34,7 @@ The following parameters are available in the `sshd` class:
 * [`config`](#config)
 * [`config_matches`](#config_matches)
 * [`banner`](#banner)
+* [`banner_ignore`](#banner_ignore)
 * [`revoked_keys`](#revoked_keys)
 * [`required_packages`](#required_packages)
 * [`revoked_keys_file`](#revoked_keys_file)
@@ -94,12 +95,18 @@ Example of hiera data:
 ```
 sshd::banner: |2+
 
-Login with NCSA Kerberos + Duo multi-factor.
+  Login with NCSA Kerberos + NCSA Duo multi-factor.
 
-DUO Documentation:  https://go.ncsa.illinois.edu/2fa
+  DUO Documentation:  https://go.ncsa.illinois.edu/2fa
 ```
 
 Default value: ``undef``
+
+##### <a name="banner_ignore"></a>`banner_ignore`
+
+Data type: `Boolean`
+
+Disable setting banner in sshd even if banner content is set
 
 ##### <a name="revoked_keys"></a>`revoked_keys`
 
