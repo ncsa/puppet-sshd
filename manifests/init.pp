@@ -165,7 +165,7 @@ class sshd (
   }
 
   #SSH Banner creation
-  if ($banner != undef and ! $banner_ignore ) {
+  if ($banner != undef ) {
     file { '/etc/sshbanner':
       ensure  => file,
       content => $banner,
@@ -173,10 +173,12 @@ class sshd (
       owner   => '0',
       group   => '0',
     }
-    sshd_config {
-      'Banner' :
-        value => '/etc/sshbanner',
-      ;
+    if ( ! $banner_ignore ) {
+      sshd_config {
+        'Banner' :
+          value => '/etc/sshbanner',
+        ;
+      }
     }
   }
 }
