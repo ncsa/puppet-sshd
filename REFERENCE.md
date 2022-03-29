@@ -30,21 +30,43 @@ include sshd
 
 The following parameters are available in the `sshd` class:
 
-* [`trusted_subnets`](#trusted_subnets)
-* [`config`](#config)
-* [`config_matches`](#config_matches)
 * [`banner`](#banner)
 * [`banner_ignore`](#banner_ignore)
-* [`revoked_keys`](#revoked_keys)
+* [`config`](#config)
+* [`config_file`](#config_file)
+* [`config_matches`](#config_matches)
+* [`config_subsystems`](#config_subsystems)
+* [`manage_service`](#manage_service)
 * [`required_packages`](#required_packages)
+* [`revoked_keys`](#revoked_keys)
 * [`revoked_keys_file`](#revoked_keys_file)
+* [`service_name`](#service_name)
+* [`trusted_subnets`](#trusted_subnets)
 
-##### <a name="trusted_subnets"></a>`trusted_subnets`
+##### <a name="banner"></a>`banner`
 
-Data type: `Array`
+Data type: `Optional[String]`
 
-Array of IPs and CIDRs to be allowed through the firewall
-Values from multiple sources are merged
+A string to create a banner to display before login.
+Use to display before authentication.
+Defining this automatically sets the sshd_config option.
+If you define the Banner config in hiera, the Puppet agent will not run.
+Example of hiera data:
+```
+sshd::banner: |2+
+
+  Login with NCSA Kerberos + NCSA Duo multi-factor.
+
+  DUO Documentation:  https://go.ncsa.illinois.edu/2fa
+```
+
+Default value: ``undef``
+
+##### <a name="banner_ignore"></a>`banner_ignore`
+
+Data type: `Boolean`
+
+Disable setting banner in sshd even if banner content is set
 
 ##### <a name="config"></a>`config`
 
@@ -54,6 +76,12 @@ Hash of global config settings
 Defaults provided by this module
 Values from multiple sources are merged
 Key collisions are resolved in favor of the higher priority value
+
+##### <a name="config_file"></a>`config_file`
+
+Data type: `String`
+
+Full path to sshd_config file
 
 ##### <a name="config_matches"></a>`config_matches`
 
@@ -83,37 +111,17 @@ Merges are deep to allow use of the knockout_prefix '-' (to remove a key
 from the final result).
 ```
 
-##### <a name="banner"></a>`banner`
+##### <a name="config_subsystems"></a>`config_subsystems`
 
-Data type: `Optional[String]`
+Data type: `Hash`
 
-A string to create a banner to display before login.
-Use to display before authentication.
-Defining this automatically sets the sshd_config option.
-If you define the Banner config in hiera, the Puppet agent will not run.
-Example of hiera data:
-```
-sshd::banner: |2+
+Hash of sshd subsystems to enable and configure
 
-  Login with NCSA Kerberos + NCSA Duo multi-factor.
-
-  DUO Documentation:  https://go.ncsa.illinois.edu/2fa
-```
-
-Default value: ``undef``
-
-##### <a name="banner_ignore"></a>`banner_ignore`
+##### <a name="manage_service"></a>`manage_service`
 
 Data type: `Boolean`
 
-Disable setting banner in sshd even if banner content is set
-
-##### <a name="revoked_keys"></a>`revoked_keys`
-
-Data type: `Array[String]`
-
-List of ssh public keys to disallow.
-Values from multiple sources are merged.
+Flag of whether to manage sshd service
 
 ##### <a name="required_packages"></a>`required_packages`
 
@@ -122,11 +130,31 @@ Data type: `Array[String]`
 List of package names to be installed (OS specific).
 (Defaults provided by module should be sufficient).
 
+##### <a name="revoked_keys"></a>`revoked_keys`
+
+Data type: `Array[String]`
+
+List of ssh public keys to disallow.
+Values from multiple sources are merged.
+
 ##### <a name="revoked_keys_file"></a>`revoked_keys_file`
 
 Data type: `String`
 
+Full path to name of revoked keys file
 
+##### <a name="service_name"></a>`service_name`
+
+Data type: `String`
+
+Name os sshd service
+
+##### <a name="trusted_subnets"></a>`trusted_subnets`
+
+Data type: `Array`
+
+Array of IPs and CIDRs to be allowed through the firewall
+Values from multiple sources are merged
 
 ## Defined types
 

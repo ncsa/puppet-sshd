@@ -12,6 +12,8 @@ lookup_options:
     merge: "deep"
 
 sshd::banner_ignore: false
+sshd::config_file: "/etc/ssh/sshd_config"
 sshd::config_matches: {}
+sshd::manage_service: true
 sshd::revoked_keys: []
 sshd::trusted_subnets: []
