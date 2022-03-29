@@ -115,8 +115,14 @@ define sshd::allow_from (
 
   ### SSHD_CONFIG
   # Defaults
-  $config_defaults = {
-    'notify' => Service[ sshd ],
+  if ( $sshd::manage_service ) {
+    $config_defaults = {
+      'notify' => Service[$sshd::service_name],
+    }
+  } else {
+    $config_defaults = {
+      'ensure' => 'present',
+    }
   }
   $config_match_defaults = $config_defaults + {
     'position' => 'before first match'

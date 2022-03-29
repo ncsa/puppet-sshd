@@ -7,6 +7,9 @@ sshd::config:
   PermitRootLogin: "no"
   PubkeyAuthentication: "no"
   UsePAM: "yes"
+sshd::config_subsystems:
+  sftp: "/usr/libexec/openssh/sftp-server"
 sshd::required_packages:
   - "openssh-server"
 sshd::revoked_keys_file: "/etc/ssh/revoked_keys"
+sshd::service_name: "sshd"
