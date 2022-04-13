@@ -2,6 +2,7 @@
 sshd::config:
   AllowGroups:
     - "root"
+  AuthenticationMethods: "none"
   DenyGroups:
     - "all_disabled_usr"
   PermitRootLogin: "no"
