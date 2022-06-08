@@ -30,6 +30,7 @@ include sshd
 
 The following parameters are available in the `sshd` class:
 
+* [`allow_list`](#allow_list)
 * [`banner`](#banner)
 * [`banner_ignore`](#banner_ignore)
 * [`config`](#config)
@@ -42,6 +43,46 @@ The following parameters are available in the `sshd` class:
 * [`revoked_keys_file`](#revoked_keys_file)
 * [`service_name`](#service_name)
 * [`trusted_subnets`](#trusted_subnets)
+
+##### <a name="allow_list"></a>`allow_list`
+
+Data type: `Hash`
+
+Hash to pass to allow_from.pp, where top level key is the name
+and the values under that is the hash to pass to allow_from.pp
+
+See allow_from.pp for allowed values
+
+Example:
+```
+sshd::allow_list::allows:
+  "dummyuser":
+    hostlist:
+      - "1.1.1.1"
+    users:
+      - "dummyuser"
+    additional_match_params:
+      PubkeyAuthentication: "yes"
+      AuthenticationMethods: "publickey"
+      Banner: "none"
+      MaxAuthTries: "6"
+      MaxSessions: "10"
+      X11Forwarding: "no"
+      AuthorizedKeysFile: "/delta/home/keys/%u"
+  "dummygroup":
+    hostlist:
+      - "2.2.2.2"
+    groups:
+      - "dummygroup"
+    additional_match_params:
+      PubkeyAuthentication: "yes"
+      AuthenticationMethods: "publickey"
+      Banner: "none"
+      MaxAuthTries: "6"
+      MaxSessions: "10"
+      X11Forwarding: "no"
+      AuthorizedKeysFile: "/delta/home/keys/%u"
+```
 
 ##### <a name="banner"></a>`banner`
 
@@ -104,11 +145,42 @@ sshd::config_matches:
     SettingTwo:
       - val2
       - val3
+
+# Example
+sshd::config_matches:
+  "Address 1.1.1.1,2.2.2.2 Group groupname User user1,user2":
+    PubkeyAuthentication: "yes"
+    AuthenticationMethods: "publickey"
+    Banner: "none"
+    MaxAuthTries: "6"
+    MaxSessions: "10"
+    X11Forwarding: "no"
+    AuthorizedKeysFile: "/cluster/home/keys/%u"
+  "Address 3.3.3.3 Group groupname2":
+    PubkeyAuthentication: "yes"
+    AuthenticationMethods: "publickey"
+    Banner: "none"
+    MaxAuthTries: "6"
+    MaxSessions: "10"
+    X11Forwarding: "no"
+    AuthorizedKeysFile: "/cluster/home/groupname2/%u"
+
 Note that condition strings must be valid sshd_config criteria-pattern pairs
 Values from multiple sources are merged
 Key collisions are resolved in favor of the higher priority value
 Merges are deep to allow use of the knockout_prefix '-' (to remove a key
 from the final result).
+
+Also note that unlike the allow_list parameter, adding match blocks using
+this param will not edit iptables/sssd/access.conf configs. This might be
+preferred if you need to add a match block with a negated user like:
+User *,!wa0*
+If you tried to use allow_list for a list of users like that it would attempt
+to create access.conf/sssd allows for the user !wa0*, which doesn't make sense
+and will actually cause puppet errors
+
+This param is also useful for adding a match block where the match line is more
+customized than what allow_list can accept
 ```
 
 ##### <a name="config_subsystems"></a>`config_subsystems`

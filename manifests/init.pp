@@ -2,6 +2,43 @@
 #
 # Configure default sshd settings
 #
+# @param allow_list
+#   Hash to pass to allow_from.pp, where top level key is the name
+#   and the values under that is the hash to pass to allow_from.pp
+#
+#   See allow_from.pp for allowed values
+#
+#   Example:
+#   ```
+#   sshd::allow_list::allows:
+#     "dummyuser":
+#       hostlist:
+#         - "1.1.1.1"
+#       users:
+#         - "dummyuser"
+#       additional_match_params:
+#         PubkeyAuthentication: "yes"
+#         AuthenticationMethods: "publickey"
+#         Banner: "none"
+#         MaxAuthTries: "6"
+#         MaxSessions: "10"
+#         X11Forwarding: "no"
+#         AuthorizedKeysFile: "/delta/home/keys/%u"
+#     "dummygroup":
+#       hostlist:
+#         - "2.2.2.2"
+#       groups:
+#         - "dummygroup"
+#       additional_match_params:
+#         PubkeyAuthentication: "yes"
+#         AuthenticationMethods: "publickey"
+#         Banner: "none"
+#         MaxAuthTries: "6"
+#         MaxSessions: "10"
+#         X11Forwarding: "no"
+#         AuthorizedKeysFile: "/delta/home/keys/%u"
+#   ```
+#
 # @param banner
 #   A string to create a banner to display before login.
 #   Use to display before authentication.
@@ -46,11 +83,42 @@
 #       SettingTwo:
 #         - val2
 #         - val3
+#
+#   # Example
+#   sshd::config_matches:
+#     "Address 1.1.1.1,2.2.2.2 Group groupname User user1,user2":
+#       PubkeyAuthentication: "yes"
+#       AuthenticationMethods: "publickey"
+#       Banner: "none"
+#       MaxAuthTries: "6"
+#       MaxSessions: "10"
+#       X11Forwarding: "no"
+#       AuthorizedKeysFile: "/cluster/home/keys/%u"
+#     "Address 3.3.3.3 Group groupname2":
+#       PubkeyAuthentication: "yes"
+#       AuthenticationMethods: "publickey"
+#       Banner: "none"
+#       MaxAuthTries: "6"
+#       MaxSessions: "10"
+#       X11Forwarding: "no"
+#       AuthorizedKeysFile: "/cluster/home/groupname2/%u"
+#
 #   Note that condition strings must be valid sshd_config criteria-pattern pairs
 #   Values from multiple sources are merged
 #   Key collisions are resolved in favor of the higher priority value
 #   Merges are deep to allow use of the knockout_prefix '-' (to remove a key
 #   from the final result).
+#
+#   Also note that unlike the allow_list parameter, adding match blocks using
+#   this param will not edit iptables/sssd/access.conf configs. This might be
+#   preferred if you need to add a match block with a negated user like:
+#   User *,!wa0*
+#   If you tried to use allow_list for a list of users like that it would attempt
+#   to create access.conf/sssd allows for the user !wa0*, which doesn't make sense
+#   and will actually cause puppet errors
+#
+#   This param is also useful for adding a match block where the match line is more
+#   customized than what allow_list can accept
 #   ```
 #
 # @param config_subsystems
@@ -80,6 +148,7 @@
 # @example
 #   include sshd
 class sshd (
+  Hash              $allow_list,
   Boolean           $banner_ignore,
   Hash              $config,
   String            $config_file,
@@ -194,6 +263,11 @@ class sshd (
         ;
       }
     }
+  }
+
+  # Process allow_list from Hiera
+  $allow_list.each | $name, $v | {
+    sshd::allow_from { $name: * => $v }
   }
 
   #SSH Banner creation
