@@ -1,5 +1,9 @@
 ---
 lookup_options:
+  sshd::allow_list::allows:
+    merge:
+      strategy: "deep"
+      knockout_prefix: "-"
   sshd::config:
     merge: "hash"
   sshd::config_matches:
@@ -10,6 +14,8 @@ lookup_options:
     merge: "deep"
   sshd::trusted_subnets:
     merge: "deep"
+
+sshd::allow_list::allows: {}
 
 sshd::banner_ignore: false
 sshd::config_file: "/etc/ssh/sshd_config"

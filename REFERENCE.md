@@ -7,6 +7,7 @@
 ### Classes
 
 * [`sshd`](#sshd): Configure default sshd settings
+* [`sshd::allow_list`](#sshdallow_list): Hash of allows to pass to allow_from.pp
 
 ### Defined types
 
@@ -155,6 +156,64 @@ Data type: `Array`
 
 Array of IPs and CIDRs to be allowed through the firewall
 Values from multiple sources are merged
+
+### <a name="sshdallow_list"></a>`sshd::allow_list`
+
+Hash of allows to pass to allow_from.pp
+
+#### Examples
+
+##### 
+
+```puppet
+include sshd::allow_list
+```
+
+#### Parameters
+
+The following parameters are available in the `sshd::allow_list` class:
+
+* [`allows`](#allows)
+
+##### <a name="allows"></a>`allows`
+
+Data type: `Hash`
+
+Hash to pass to allow_from.pp, where top level key is the name
+and the values under that is the hash to pass to allow_from.pp
+
+See allow_from.pp for allowed values
+
+Example:
+```
+sshd::allow_list::allows:
+  "dummyuser":
+    hostlist:
+      - "1.1.1.1"
+    users:
+      - "dummyuser"
+    additional_match_params:
+      PubkeyAuthentication: "yes"
+      AuthenticationMethods: "publickey"
+      Banner: "none"
+      MaxAuthTries: "6"
+      MaxSessions: "10"
+      X11Forwarding: "no"
+      AuthorizedKeysFile: "/delta/home/keys/%u"
+  "dummygroup":
+    hostlist:
+      - "2.2.2.2"
+    groups:
+      - "dummygroup"
+    additional_match_params:
+      PubkeyAuthentication: "yes"
+      AuthenticationMethods: "publickey"
+      Banner: "none"
+      MaxAuthTries: "6"
+      MaxSessions: "10"
+      X11Forwarding: "no"
+      AuthorizedKeysFile: "/delta/home/keys/%u"
+```
 
 ## Defined types
 

@@ -94,6 +94,8 @@ class sshd (
   Optional[String]  $banner = undef,
 ) {
 
+  include sshd::allow_list
+
   # PACKAGES
   ensure_packages( $required_packages, {'ensure' => 'present'} )
 
