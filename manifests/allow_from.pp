@@ -22,12 +22,17 @@
 #   List of IPs or Hostnames that (users/groups) are allowed to ssh from
 #
 # @param additional_match_params
-#   Sshd config keywords and values.
+#   Sshd config keywords and values for setting config inside the match block
 #   Format:
 #   additional_match_params = { 'keyword1' => 'value1',
 #                               'keyword2' => 'value2',
 #                               'keyword3' => [ 'val3_1','val3_2' ],
 #                             }
+#  
+# @param config_match_params
+#   Config params for the match block itself
+#   Like comment, position, etc, See XXX for avaliable options TODO
+#   TODO example
 #
 # @example
 #   sshd::allow_from { 'namevar': }
@@ -44,6 +49,7 @@ define sshd::allow_from (
   Array[ String ]      $users                   = [],
   Array[ String ]      $groups                  = [],
   Hash[ String, Data ] $additional_match_params = {},
+  Hash                 $config_match_params     = {},
 ) {
 
   # CHECK INPUT
@@ -124,8 +130,13 @@ define sshd::allow_from (
       'ensure' => 'present',
     }
   }
-  $config_match_defaults = $config_defaults + {
-    'position' => 'before first match'
+
+  if ($config_match_params) {
+    $config_match_defaults = $config_defaults + $config_match_params
+  } else {
+    $config_match_defaults = $config_defaults + {
+      'position' => 'before first match'
+    }
   }
 
   # Create cfg_match_params for Users and Groups
