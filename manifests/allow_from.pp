@@ -133,12 +133,12 @@ define sshd::allow_from (
 
   if ($config_match_params) {
     $config_match_defaults = $config_defaults + $config_match_params
-    notify { "$config_match_defaults": }  # TODO rem
+    notify { "#1 $config_match_defaults": }  # TODO rem
   } else {
     $config_match_defaults = $config_defaults + {
       'position' => 'before first match'
     }
-    notify { "$config_match_defaults": }  # TODO rem
+    notify { "#2 $config_match_defaults": }  # TODO rem
   }
 
   # Create cfg_match_params for Users and Groups
