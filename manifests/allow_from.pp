@@ -133,7 +133,7 @@ define sshd::allow_from (
 
   if ($config_match_params) {
     $config_match_defaults = $config_defaults + $config_match_params
-    notify { "#1 $config_match_defaults": }  # TODO rem
+    notify { "$title : $config_match_defaults": }  # TODO rem
     #notice("#1 $config_match_defaults")  # TODO rem
   } else {
     $config_match_defaults = $config_defaults + {
