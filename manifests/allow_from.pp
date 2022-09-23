@@ -201,6 +201,8 @@ define sshd::allow_from (
     $pattern = join( $list, ',' )
     $match_condition = "${criteria} ${pattern} ${user_criteria} ${group_criteria}"
 
+    notify { "$match_condition": }  # TODO rem
+
     #ensure match block exists
     # $match_data = { $match_condition => {} }
     ensure_resource( 'sshd_config_match', $match_condition, $config_match_defaults )
