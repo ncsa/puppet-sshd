@@ -134,9 +134,12 @@ define sshd::allow_from (
   if empty($config_match_params) {
     notify { "$title : EMPTY config_match_params": }  # TODO rem
 
-    $config_match_defaults = $config_defaults + {
-      'position' => 'before first match'
+    #$config_match_defaults = $config_defaults + {
+    #  'position' => 'before first match'
     }
+    # blank out default hard coded position  TODO rem
+    $config_match_defaults = $config_defaults
+
 
     notify { "$title : #1 : $config_match_defaults": }  # TODO rem
 
