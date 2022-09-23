@@ -132,7 +132,7 @@ define sshd::allow_from (
   }
 
   if empty($config_match_params) {
-    notify { "$title : EMPTY config_match_params": }  # TODO rem
+    #notify { "$title : EMPTY config_match_params": }  # TODO rem
 
     #$config_match_defaults = $config_defaults + {
     #  'position' => 'before first match'
@@ -141,13 +141,13 @@ define sshd::allow_from (
     $config_match_defaults = $config_defaults
 
 
-    notify { "$title : #1 : $config_match_defaults": }  # TODO rem
+    #notify { "$title : #1 : $config_match_defaults": }  # TODO rem
 
   } else {
-    notify { "$title : NOT EMPTY config_match_params": }  # TODO rem
+    #notify { "$title : NOT EMPTY config_match_params": }  # TODO rem
 
     $config_match_defaults = $config_defaults + $config_match_params
-    notify { "$title : #2 : $config_match_defaults": }  # TODO rem
+    #notify { "$title : #2 : $config_match_defaults": }  # TODO rem
   }
 
   # Create cfg_match_params for Users and Groups
@@ -204,7 +204,7 @@ define sshd::allow_from (
     $pattern = join( $list, ',' )
     $match_condition = "${criteria} ${pattern} ${user_criteria} ${group_criteria}"
 
-    notify { "$match_condition": }  # TODO rem
+    #notify { "$match_condition": }  # TODO rem
 
     #ensure match block exists
     # $match_data = { $match_condition => {} }
