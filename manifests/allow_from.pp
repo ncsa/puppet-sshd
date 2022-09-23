@@ -136,7 +136,7 @@ define sshd::allow_from (
 
     #$config_match_defaults = $config_defaults + {
     #  'position' => 'before first match'
-    }
+    #}
     # blank out default hard coded position  TODO rem
     $config_match_defaults = $config_defaults
 
