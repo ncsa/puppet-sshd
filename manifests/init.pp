@@ -10,7 +10,7 @@
 #
 #   Example:
 #   ```
-#   sshd::allow_list::allows:
+#   sshd::allow_list:
 #     "dummyuser":
 #       hostlist:
 #         - "1.1.1.1"

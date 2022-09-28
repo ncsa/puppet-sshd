@@ -55,7 +55,7 @@ See allow_from.pp for allowed values
 
 Example:
 ```
-sshd::allow_list::allows:
+sshd::allow_list:
   "dummyuser":
     hostlist:
       - "1.1.1.1"
