@@ -39,11 +39,17 @@
 #       'hostlist'                => Array,
 #       'additional_match_params' => Hash,
 #   }
+#
+# @param position
+#   Position of the match block relative to other match blocks
+#   Format: [before|after] [first match|last match|<match condition of another block>]
+#
 define sshd::allow_from (
   Array[ String, 1 ]   $hostlist,
   Array[ String ]      $users                   = [],
   Array[ String ]      $groups                  = [],
   Hash[ String, Data ] $additional_match_params = {},
+  Optional[ String ]   $position                = undef,
 ) {
 
   # CHECK INPUT
@@ -124,8 +130,16 @@ define sshd::allow_from (
       'ensure' => 'present',
     }
   }
-  $config_match_defaults = $config_defaults + {
-    'position' => 'before first match'
+
+  # Set position relative to other match blocks if specified
+  if ( $position ) {
+    $config_match_defaults = $config_defaults + {
+      'position' => $position,
+    }
+  } else {
+    $config_match_defaults = $config_defaults + {
+      'position' => 'before first match',
+    }
   }
 
   # Create cfg_match_params for Users and Groups
@@ -180,7 +194,8 @@ define sshd::allow_from (
   #loop through host_data creating a match block for each criteria-pattern
   $host_data.each | $criteria, $list | {
     $pattern = join( $list, ',' )
-    $match_condition = "${criteria} ${pattern} ${user_criteria} ${group_criteria}"
+    $conditions = [$criteria, $pattern, $user_criteria, $group_criteria].filter | $elem | { $elem != '' }
+    $match_condition = join( $conditions, ' ' )
 
     #ensure match block exists
     # $match_data = { $match_condition => {} }
