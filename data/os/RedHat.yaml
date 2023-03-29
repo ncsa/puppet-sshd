@@ -9,7 +9,7 @@ sshd::config:
   PubkeyAuthentication: "no"
   UsePAM: "yes"
 sshd::config_subsystems:
-  sftp: "/usr/libexec/openssh/sftp-server"
+  sftp: "/usr/libexec/openssh/sftp-server -l VERBOSE"
 sshd::required_packages:
   - "openssh-server"
 sshd::revoked_keys_file: "/etc/ssh/revoked_keys"

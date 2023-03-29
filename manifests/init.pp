@@ -162,9 +162,8 @@ class sshd (
   Array             $trusted_subnets,
   Optional[String]  $banner = undef,
 ) {
-
   # PACKAGES
-  ensure_packages( $required_packages, {'ensure' => 'present'} )
+  ensure_packages( $required_packages, { 'ensure' => 'present' })
 
   # SERVICE
   if ( $manage_service ) {
@@ -173,11 +172,11 @@ class sshd (
       enable     => true,
       hasstatus  => true,
       hasrestart => true,
-      require    => Package[ $required_packages ],
+      require    => Package[$required_packages],
     }
     # SET DEFAULTS TO NOTIFY SERVICE
     $config_defaults = {
-      'notify' => Service[$service_name] ,
+      'notify' => Service[$service_name],
     }
   } else {
     # SET DEFAULTS TO SKIP NOTIFY SERVICE
@@ -199,14 +198,14 @@ class sshd (
 
   # SSHD CONFIG SETTINGS
 #  if ( $config_defaults ) {
-    $config_match_defaults = $config_defaults + { 'position' => 'before first match' }
+  $config_match_defaults = $config_defaults + { 'position' => 'before first match' }
 #  } else {
 #    $config_match_defaults = { 'position' => 'before first match' }
 #  }
 
   # REVOKED KEYS
   file { $revoked_keys_file :
-    ensure  => present,
+    ensure  => file,
     owner   => root,
     group   => root,
     mode    => '0644',
@@ -215,17 +214,17 @@ class sshd (
   sshd_config {
     'RevokedKeys' :
       value => $revoked_keys_file,
-    ;
+      ;
     default:
       * => $config_defaults,
-    ;
+      ;
   }
 
   $puppet_file_header = '# This file is managed by Puppet - Changes may be overwritten'
   exec { 'add puppet header to sshd_config':
     command => "sed -i '1s/^/${puppet_file_header}\\n/' '${config_file}'",
     unless  => "grep '${puppet_file_header}' ${config_file}",
-    path    => [ '/bin', '/usr/bin' ],
+    path    => ['/bin', '/usr/bin'],
   }
 
   # Apply global sshd_config settings
@@ -233,10 +232,10 @@ class sshd (
     sshd_config {
       $key :
         value => $val,
-      ;
+        ;
       default:
         * => $config_defaults,
-      ;
+        ;
     }
   }
 
@@ -245,10 +244,10 @@ class sshd (
     # Create config match section
     sshd_config_match {
       $condition :
-      ;
+        ;
       default:
         * => $config_match_defaults,
-      ;
+        ;
     }
     # Set each setting inside the match section
     $data.each | $key, $val | {
@@ -257,10 +256,10 @@ class sshd (
           key       => $key,
           value     => $val,
           condition => $condition,
-        ;
+          ;
         default:
           * => $config_defaults,
-        ;
+          ;
       }
     }
   }
@@ -283,10 +282,10 @@ class sshd (
       sshd_config {
         'Banner' :
           value => '/etc/sshbanner',
-        ;
+          ;
         default:
           * => $config_defaults,
-        ;
+          ;
       }
     }
   }
@@ -296,11 +295,10 @@ class sshd (
     sshd_config_subsystem {
       $key :
         command => $val,
-      ;
+        ;
       default:
         * => $config_defaults,
-      ;
+        ;
     }
   }
-
 }
