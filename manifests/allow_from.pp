@@ -40,38 +40,35 @@
 #       'additional_match_params' => Hash,
 #   }
 define sshd::allow_from (
-  Array[ String, 1 ]   $hostlist,
-  Array[ String ]      $users                   = [],
-  Array[ String ]      $groups                  = [],
-  Hash[ String, Data ] $additional_match_params = {},
+  Array[String, 1]   $hostlist,
+  Array[String]      $users                   = [],
+  Array[String]      $groups                  = [],
+  Hash[String, Data] $additional_match_params = {},
 ) {
-
   # CHECK INPUT
   if empty( $users ) and empty( $groups ) {
     fail( "'users' and 'groups' cannot both be empty" )
   }
 
-
   # ACCESS.CONF
   ### This sets up the pam access.conf file to allow incoming ssh
   $groups.each |String $group| { $hostlist.each |String $host| {
-    pam_access::entry { "Allow group ${group} ssh from ${host}":
-      group      => $group,
-      origin     => $host,
-      permission => '+',
-      position   => '-1',
-    }
-  }}
+      pam_access::entry { "Allow group ${group} ssh from ${host}":
+        group      => $group,
+        origin     => $host,
+        permission => '+',
+        position   => '-1',
+      }
+  } }
 
   $users.each |String $user| { $hostlist.each |String $host| {
-    pam_access::entry { "Allow user ${user} ssh from ${host}":
-      user       => $user,
-      origin     => $host,
-      permission => '+',
-      position   => '-1',
-    }
-  }}
-
+      pam_access::entry { "Allow user ${user} ssh from ${host}":
+        user       => $user,
+        origin     => $host,
+        permission => '+',
+        position   => '-1',
+      }
+  } }
 
   ### FIREWALL
   $hostlist.each | $host | {
@@ -83,7 +80,6 @@ define sshd::allow_from (
     }
   }
 
-
   ### SSSD
   # Requires custom fact 'sssd_domains'
   # See: lib/augeasfacter/sssd_info.conf
@@ -92,7 +88,7 @@ define sshd::allow_from (
   # convert sssd domains from csv string to a puppet array
   $domains = $facts['sssd_domains'] ? {
     String[1] => $facts['sssd_domains'].regsubst(/ +/, '', 'G').split(','),
-    default   =>  [],
+    default   => [],
   }
   $domains.each |$domain| {
     if $users =~ Array[String,1] {
@@ -130,11 +126,11 @@ define sshd::allow_from (
 
   # Create cfg_match_params for Users and Groups
   $user_params = $users ? {
-    Array[ String, 1 ] => { 'AllowUsers' => $users },
+    Array[String, 1] => { 'AllowUsers' => $users },
     default            => {}
   }
   $group_params = $groups ? {
-    Array[ String, 1 ] => { 'AllowGroups' => $groups },
+    Array[String, 1] => { 'AllowGroups' => $groups },
     default            => {}
   }
 
@@ -160,7 +156,7 @@ define sshd::allow_from (
 
   # Create User match criteria (empty if user list is empty)
   $user_csv = $users ? {
-    Array[ String, 1 ] => join( $users, ',' ),
+    Array[String, 1] => join( $users, ',' ),
     default            => '',
   }
   $user_criteria = $user_csv ? {
@@ -169,7 +165,7 @@ define sshd::allow_from (
   }
   # Create Group match criteria (empty if group list is empty)
   $group_csv = $groups ? {
-    Array[ String, 1 ] => join( $groups, ',' ),
+    Array[String, 1] => join( $groups, ',' ),
     default            => '',
   }
   $group_criteria = $group_csv ? {
@@ -194,7 +190,7 @@ define sshd::allow_from (
     # }
 
     #add parameters to the match block
-    $config_data = $cfg_match_params.reduce( {} ) | $memo, $kv | {
+    $config_data = $cfg_match_params.reduce({}) | $memo, $kv | {
       $key = $kv[0]
       $val = $kv[1]
       $memo + {
