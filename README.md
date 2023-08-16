@@ -7,11 +7,11 @@ Manage base sshd_config settings and allow_ssh access for users and groups from
 specified sources.
 
 ## Dependencies
-- [MiamiOH/pam_access](https://forge.puppet.com/MiamiOH/pam_access)
+- [herculesteam/augeasfacter](https://github.com/herculesteam/augeasfacter)
 - [herculesteam/augeasproviders](https://forge.puppet.com/herculesteam/augeasproviders)
+- [MiamiOH/pam_access](https://forge.puppet.com/MiamiOH/pam_access)
 - [ncsa/puppet-sssd](https://github.com/ncsa/puppet-sssd)
 - [puppetlabs/firewall](https://forge.puppet.com/puppetlabs/firewall)
-- [woodsbw/augeasfacter](https://github.com/woodsbw/augeasfacter)
 
 ## Reference
 
