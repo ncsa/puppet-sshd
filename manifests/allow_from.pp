@@ -83,7 +83,7 @@ define sshd::allow_from (
   ### SSSD
   # Requires custom fact 'sssd_domains'
   # See: lib/augeasfacter/sssd_info.conf
-  # See also: https://github.com/woodsbw/augeasfacter
+  # See also: https://github.com/herculesteam/augeasfacter
   ###
   # convert sssd domains from csv string to a puppet array
   $domains = $facts['sssd_domains'] ? {
