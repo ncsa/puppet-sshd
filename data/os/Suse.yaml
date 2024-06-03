@@ -1,0 +1,40 @@
+---
+sshd::config:
+  AddressFamily: "inet"
+  AllowGroups:
+    - "root"
+  AuthenticationMethods: "none"
+  ChallengeResponseAuthentication: "no"
+  ClientAliveCountMax: "4"
+  ClientAliveInterval: "30"
+  Compression: "yes"
+  DenyGroups:
+    - "all_disabled_usr"
+  DisableForwarding: "yes"
+  GSSAPIAuthentication: "no"
+  GSSAPICleanupCredentials: "no"
+  GSSAPIKeyExchange: "yes"
+  GatewayPorts: "no"
+  HostKey:
+    - "/etc/ssh/ssh_host_ecdsa_key"
+    - "/etc/ssh/ssh_host_ed25519_key"
+    - "/etc/ssh/ssh_host_rsa_key"
+  KerberosAuthentication: "no"
+  LogLevel: "VERBOSE"
+  MaxAuthTries: "2"
+  PasswordAuthentication: "no"
+  PermitRootLogin: "no"
+  PubkeyAuthentication: "no"
+  SyslogFacility: "AUTHPRIV"
+  UseDNS: "no"
+  UsePAM: "yes"
+
+sshd::config_subsystems:
+  sftp: "/usr/libexec/openssh/sftp-server -l VERBOSE"
+
+sshd::required_packages:
+  - "openssh-server"
+
+sshd::revoked_keys_file: "/etc/ssh/revoked_keys"
+
+sshd::service_name: "sshd"
