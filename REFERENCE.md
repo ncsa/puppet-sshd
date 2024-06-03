@@ -10,7 +10,7 @@
 
 ### Defined types
 
-* [`sshd::allow_from`](#sshdallow_from): Enable incoming ssh for a given set of hosts
+* [`sshd::allow_from`](#sshd--allow_from): Enable incoming ssh for a given set of hosts
 
 ## Classes
 
@@ -30,21 +30,21 @@ include sshd
 
 The following parameters are available in the `sshd` class:
 
-* [`allow_list`](#allow_list)
-* [`banner`](#banner)
-* [`banner_ignore`](#banner_ignore)
-* [`config`](#config)
-* [`config_file`](#config_file)
-* [`config_matches`](#config_matches)
-* [`config_subsystems`](#config_subsystems)
-* [`manage_service`](#manage_service)
-* [`required_packages`](#required_packages)
-* [`revoked_keys`](#revoked_keys)
-* [`revoked_keys_file`](#revoked_keys_file)
-* [`service_name`](#service_name)
-* [`trusted_subnets`](#trusted_subnets)
+* [`allow_list`](#-sshd--allow_list)
+* [`banner`](#-sshd--banner)
+* [`banner_ignore`](#-sshd--banner_ignore)
+* [`config`](#-sshd--config)
+* [`config_file`](#-sshd--config_file)
+* [`config_matches`](#-sshd--config_matches)
+* [`config_subsystems`](#-sshd--config_subsystems)
+* [`manage_service`](#-sshd--manage_service)
+* [`required_packages`](#-sshd--required_packages)
+* [`revoked_keys`](#-sshd--revoked_keys)
+* [`revoked_keys_file`](#-sshd--revoked_keys_file)
+* [`service_name`](#-sshd--service_name)
+* [`trusted_subnets`](#-sshd--trusted_subnets)
 
-##### <a name="allow_list"></a>`allow_list`
+##### <a name="-sshd--allow_list"></a>`allow_list`
 
 Data type: `Hash`
 
@@ -84,7 +84,7 @@ sshd::allow_list:
       AuthorizedKeysFile: "/delta/home/keys/%u"
 ```
 
-##### <a name="banner"></a>`banner`
+##### <a name="-sshd--banner"></a>`banner`
 
 Data type: `Optional[String]`
 
@@ -101,15 +101,15 @@ sshd::banner: |2+
   DUO Documentation:  https://go.ncsa.illinois.edu/2fa
 ```
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="banner_ignore"></a>`banner_ignore`
+##### <a name="-sshd--banner_ignore"></a>`banner_ignore`
 
 Data type: `Boolean`
 
 Disable setting banner in sshd even if banner content is set
 
-##### <a name="config"></a>`config`
+##### <a name="-sshd--config"></a>`config`
 
 Data type: `Hash`
 
@@ -118,13 +118,13 @@ Defaults provided by this module
 Values from multiple sources are merged
 Key collisions are resolved in favor of the higher priority value
 
-##### <a name="config_file"></a>`config_file`
+##### <a name="-sshd--config_file"></a>`config_file`
 
 Data type: `String`
 
 Full path to sshd_config file
 
-##### <a name="config_matches"></a>`config_matches`
+##### <a name="-sshd--config_matches"></a>`config_matches`
 
 Data type: `Hash[String,Hash]`
 
@@ -183,45 +183,45 @@ This param is also useful for adding a match block where the match line is more
 customized than what allow_list can accept
 ```
 
-##### <a name="config_subsystems"></a>`config_subsystems`
+##### <a name="-sshd--config_subsystems"></a>`config_subsystems`
 
 Data type: `Hash`
 
 Hash of sshd subsystems to enable and configure
 
-##### <a name="manage_service"></a>`manage_service`
+##### <a name="-sshd--manage_service"></a>`manage_service`
 
 Data type: `Boolean`
 
 Flag of whether to manage sshd service
 
-##### <a name="required_packages"></a>`required_packages`
+##### <a name="-sshd--required_packages"></a>`required_packages`
 
 Data type: `Array[String]`
 
 List of package names to be installed (OS specific).
 (Defaults provided by module should be sufficient).
 
-##### <a name="revoked_keys"></a>`revoked_keys`
+##### <a name="-sshd--revoked_keys"></a>`revoked_keys`
 
 Data type: `Array[String]`
 
 List of ssh public keys to disallow.
 Values from multiple sources are merged.
 
-##### <a name="revoked_keys_file"></a>`revoked_keys_file`
+##### <a name="-sshd--revoked_keys_file"></a>`revoked_keys_file`
 
 Data type: `String`
 
 Full path to name of revoked keys file
 
-##### <a name="service_name"></a>`service_name`
+##### <a name="-sshd--service_name"></a>`service_name`
 
 Data type: `String`
 
 Name os sshd service
 
-##### <a name="trusted_subnets"></a>`trusted_subnets`
+##### <a name="-sshd--trusted_subnets"></a>`trusted_subnets`
 
 Data type: `Array`
 
@@ -230,7 +230,7 @@ Values from multiple sources are merged
 
 ## Defined types
 
-### <a name="sshdallow_from"></a>`sshd::allow_from`
+### <a name="sshd--allow_from"></a>`sshd::allow_from`
 
 Enable incoming ssh for a given set of hosts
 
@@ -263,14 +263,14 @@ ssh::allow_from { 'allow incoming ssh by users 1,2,3 from hosts X,Y,Z':
 
 The following parameters are available in the `sshd::allow_from` defined type:
 
-* [`users`](#users)
-* [`groups`](#groups)
-* [`hostlist`](#hostlist)
-* [`additional_match_params`](#additional_match_params)
+* [`users`](#-sshd--allow_from--users)
+* [`groups`](#-sshd--allow_from--groups)
+* [`hostlist`](#-sshd--allow_from--hostlist)
+* [`additional_match_params`](#-sshd--allow_from--additional_match_params)
 
-##### <a name="users"></a>`users`
+##### <a name="-sshd--allow_from--users"></a>`users`
 
-Data type: `Array[ String ]`
+Data type: `Array[String]`
 
 List of users to allow (from hostlist)
 
@@ -278,9 +278,9 @@ Note: If both "users" and "groups" are empty, error is raised.
 
 Default value: `[]`
 
-##### <a name="groups"></a>`groups`
+##### <a name="-sshd--allow_from--groups"></a>`groups`
 
-Data type: `Array[ String ]`
+Data type: `Array[String]`
 
 List of groups to allow (from hostlist)
 
@@ -288,15 +288,15 @@ Note: If both "users" and "groups" are empty, error is raised.
 
 Default value: `[]`
 
-##### <a name="hostlist"></a>`hostlist`
+##### <a name="-sshd--allow_from--hostlist"></a>`hostlist`
 
-Data type: `Array[ String, 1 ]`
+Data type: `Array[String, 1]`
 
 List of IPs or Hostnames that (users/groups) are allowed to ssh from
 
-##### <a name="additional_match_params"></a>`additional_match_params`
+##### <a name="-sshd--allow_from--additional_match_params"></a>`additional_match_params`
 
-Data type: `Hash[ String, Data ]`
+Data type: `Hash[String, Data]`
 
 Sshd config keywords and values.
 Format:
