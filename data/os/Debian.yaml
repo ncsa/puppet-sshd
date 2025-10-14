@@ -1,0 +1,9 @@
+---
+sshd::config:
+  UsePAM: "yes"
+sshd::config_subsystems:
+  sftp: "/usr/lib/openssh/sftp-server"
+sshd::required_packages:
+  - "openssh-server"
+sshd::revoked_keys_file: "/etc/ssh/revoked_keys"
+sshd::service_name: "ssh"
