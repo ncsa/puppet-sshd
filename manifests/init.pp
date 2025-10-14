@@ -192,7 +192,7 @@ class sshd (
       dport  => 22,
       proto  => tcp,
       source => $sshd_subnet,
-      action => accept,
+      jump   => accept,
     }
   }
 

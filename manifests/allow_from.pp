@@ -76,7 +76,7 @@ define sshd::allow_from (
       dport  => 22,
       proto  => tcp,
       source => $host,
-      action => accept,
+      jump   => accept,
     }
   }
 
