@@ -72,7 +72,7 @@ define sshd::allow_from (
 
   ### FIREWALL
   $hostlist.each | $host | {
-    firewall { "222 allow SSH from ${host} for ${name}":
+    firewall { "22 allow SSH from ${host} for ${name}":
       dport  => 22,
       proto  => tcp,
       source => $host,
