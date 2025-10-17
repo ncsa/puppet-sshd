@@ -163,7 +163,7 @@ class sshd (
   Optional[String]  $banner = undef,
 ) {
   # PACKAGES
-  ensure_packages( $required_packages, { 'ensure' => 'present' })
+  stdlib::ensure_packages( $required_packages, { 'ensure' => 'present' })
 
   # SERVICE
   if ( $manage_service ) {
