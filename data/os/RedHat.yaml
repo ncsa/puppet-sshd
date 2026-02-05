@@ -5,11 +5,18 @@ sshd::config:
   AuthenticationMethods: "none"
   DenyGroups:
     - "all_disabled_usr"
+  Include: "/etc/ssh/sshd_config.d/*.conf /etc/crypto-policies/back-ends/opensshserver.config"
   PermitRootLogin: "no"
+  PrintMotd: "no"
   PubkeyAuthentication: "no"
   UsePAM: "yes"
+  X11Forwarding: "no"
 sshd::config_subsystems:
   sftp: "/usr/libexec/openssh/sftp-server -l VERBOSE"
+sshd::disable_dropin_configs:
+  - "01-permitrootlogin.conf"
+  - "40-redhat-crypto-policies.conf"
+  - "50-redhat.conf"
 sshd::required_packages:
   - "openssh-server"
 sshd::revoked_keys_file: "/etc/ssh/revoked_keys"

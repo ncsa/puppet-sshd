@@ -37,6 +37,9 @@ The following parameters are available in the `sshd` class:
 * [`config_file`](#-sshd--config_file)
 * [`config_matches`](#-sshd--config_matches)
 * [`config_subsystems`](#-sshd--config_subsystems)
+* [`disable_dropin_configs`](#-sshd--disable_dropin_configs)
+* [`disable_dropin_configs_dir`](#-sshd--disable_dropin_configs_dir)
+* [`dropin_configs_dir`](#-sshd--dropin_configs_dir)
 * [`manage_service`](#-sshd--manage_service)
 * [`required_packages`](#-sshd--required_packages)
 * [`revoked_keys`](#-sshd--revoked_keys)
@@ -189,6 +192,25 @@ Data type: `Hash`
 
 Hash of sshd subsystems to enable and configure
 
+##### <a name="-sshd--disable_dropin_configs"></a>`disable_dropin_configs`
+
+Data type: `Array[String]`
+
+List of drop-in config files to disable/rename (OS-specific). Just file name, which
+are relative to the dropin_configs_dir (below).
+
+##### <a name="-sshd--disable_dropin_configs_dir"></a>`disable_dropin_configs_dir`
+
+Data type: `String`
+
+Folder for storing disabled drop-in config files.
+
+##### <a name="-sshd--dropin_configs_dir"></a>`dropin_configs_dir`
+
+Data type: `String`
+
+Folder where "active" drop-in configs live.
+
 ##### <a name="-sshd--manage_service"></a>`manage_service`
 
 Data type: `Boolean`
@@ -199,7 +221,7 @@ Flag of whether to manage sshd service
 
 Data type: `Array[String]`
 
-List of package names to be installed (OS specific).
+List of package names to be installed (OS-specific).
 (Defaults provided by module should be sufficient).
 
 ##### <a name="-sshd--revoked_keys"></a>`revoked_keys`

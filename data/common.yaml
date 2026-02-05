@@ -19,6 +19,9 @@ sshd::allow_list: {}
 sshd::banner_ignore: false
 sshd::config_file: "/etc/ssh/sshd_config"
 sshd::config_matches: {}
+sshd::disable_dropin_configs: []
+sshd::disable_dropin_configs_dir: "/etc/ssh/sshd_config.disabled"
+sshd::dropin_configs_dir: "/etc/ssh/sshd_config.d"
 sshd::manage_service: true
 sshd::revoked_keys: []
 sshd::trusted_subnets: []

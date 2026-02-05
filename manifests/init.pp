@@ -124,11 +124,21 @@
 # @param config_subsystems
 #   Hash of sshd subsystems to enable and configure
 #
+# @param disable_dropin_configs
+#   List of drop-in config files to disable/rename (OS-specific). Just file name, which
+#   are relative to the dropin_configs_dir (below).
+#
+# @param disable_dropin_configs_dir
+#   Folder for storing disabled drop-in config files.
+#
+# @param dropin_configs_dir
+#   Folder where "active" drop-in configs live.
+#
 # @param manage_service
 #   Flag of whether to manage sshd service
 #
 # @param required_packages
-#   List of package names to be installed (OS specific).
+#   List of package names to be installed (OS-specific).
 #   (Defaults provided by module should be sufficient).
 #
 # @param revoked_keys
@@ -154,6 +164,9 @@ class sshd (
   String            $config_file,
   Hash[String,Hash] $config_matches,
   Hash              $config_subsystems,
+  Array[String]     $disable_dropin_configs,
+  String            $disable_dropin_configs_dir,
+  String            $dropin_configs_dir,
   Boolean           $manage_service,
   Array[String]     $required_packages,   #per OS
   Array[String]     $revoked_keys,
@@ -299,6 +312,26 @@ class sshd (
       default:
         * => $config_defaults,
         ;
+    }
+  }
+
+  # DISABLE VENDOR-PROVIDED DROP-IN FILES
+  file { $disable_dropin_configs_dir:
+    ensure => directory,
+    owner  => root,
+    group  => root,
+    mode   => '0700',
+  }
+
+  each($disable_dropin_configs) | String $file_name | {
+    exec { "disable_${file_name}":
+      command => "mv -f ${dropin_configs_dir}/${file_name} ${disable_dropin_configs_dir}/${file_name}",
+      creates => "${disable_dropin_configs_dir}/${file_name}",
+      onlyif  => "test -e ${dropin_configs_dir}/${file_name}",
+      path    => ['/bin', '/usr/bin'],
+    }
+    if ( $manage_service ) {
+      Exec["disable_${file_name}"] ~> Service[$service_name]
     }
   }
 }

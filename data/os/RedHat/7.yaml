@@ -22,6 +22,7 @@ sshd::config:
     - "/etc/ssh/ssh_host_ecdsa_key"
     - "/etc/ssh/ssh_host_ed25519_key"
     - "/etc/ssh/ssh_host_rsa_key"
+  Include: null
   KerberosAuthentication: "no"
   KexAlgorithms:
     - "curve25519-sha256"
@@ -41,6 +42,8 @@ sshd::config:
   MaxAuthTries: "2"
   PasswordAuthentication: "no"
   PermitRootLogin: "no"
+  PrintMotd: "yes"
   PubkeyAuthentication: "no"
   SyslogFacility: "AUTHPRIV"
   UseDNS: "no"
+sshd::disable_dropin_configs: []
